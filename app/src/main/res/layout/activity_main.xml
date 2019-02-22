@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motion_scene"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layoutDescription="@xml/scroll_and_select"
     tools:context="co.hinge.motionrecycle.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -12,10 +15,54 @@
         android:layout_height="0dp"
         tools:listitem="@layout/photo_item"
         app:layoutManager="co.hinge.motionrecycle.FastLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/motion_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <include layout="@layout/header" />
+
+    <View
+        android:id="@+id/like_blur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grayLight"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/comment_bubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/send_like_comment_bubble"
+        android:text="Add a comment"
+        android:paddingTop="18dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/motion_photo_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/liked_subject_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Danielle"
+        android:textSize="30sp"
+        android:layout_marginTop="128dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
 
     <ImageView
@@ -29,7 +76,42 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:alpha="0.5"
         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/send_like_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/send_like_button"
+        android:text="Send Like"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/comment_bubble"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/cancel_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textColor="@color/grayDark"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/send_like_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

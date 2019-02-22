@@ -35,4 +35,8 @@ open class ProfileAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
         val photo = items.getOrNull(position) ?: return
         holder.onBind(photo)
     }
+
+    open fun hide(holder: PhotoViewHolder) {
+        holder.hide()
+    }
 }

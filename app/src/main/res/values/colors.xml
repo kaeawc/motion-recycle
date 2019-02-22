@@ -6,6 +6,13 @@
 
 
 
+    <color name="transparent">#00000000</color>
+    <color name="white">#fff</color>
+    <color name="grayLight">#eee</color>
+    <color name="gray">#aaa</color>
+    <color name="grayDark">#666</color>
+    <color name="black">#000</color>
+    <color name="peach">#fdd</color>
     <color name="green">#127902</color>
     <color name="blue">#0C59DF</color>
     <color name="red">#D63B3B</color>

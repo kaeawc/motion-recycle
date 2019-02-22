@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motion_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layoutDescription="@xml/resize_header"
+    android:background="@color/white">
+
+    <Space
+        android:id="@+id/header_spacer"
+        android:layout_width="0dp"
+        android:layout_height="104dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/profile_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Christina"
+        android:textSize="30sp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
