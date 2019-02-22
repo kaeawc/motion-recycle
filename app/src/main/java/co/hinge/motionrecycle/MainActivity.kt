@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,17 +18,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        recycler_view?.adapter = ProfileAdapter()
     }
 
     override fun onResume() {
         super.onResume()
-        recycler_view?.adapter = ProfileAdapter()
 
-        (recycler_view?.adapter as? ProfileAdapter)
-                ?.getClickFlow()
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe(::onPhotoClicked)
+        val adapter = (recycler_view?.adapter as? ProfileAdapter) ?: return
+
+        adapter.getClickFlow()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(::onPhotoClicked)
+                .disposeOn(this, Lifecycle.Event.ON_PAUSE)
     }
 
     private fun onPhotoClicked(position: Int) {
@@ -44,15 +47,8 @@ class MainActivity : AppCompatActivity() {
 
         val layoutManager = recycler_view?.layoutManager as? FastLayoutManager ?: return
         val viewHolder = getViewHolderAt(position) ?: return
-        val view = viewHolder.itemView
-        Timber.i("viewHolder y: ${view.y}")
-        Timber.i("viewHolder top: ${view.top}")
-        Timber.i("viewHolder measuredHeight: ${view.measuredHeight}")
-        Timber.i("viewHolder translationY: ${view.translationY}")
-
         layoutManager.smoothScrollToPosition(recycler_view, RecyclerView.State(), position)
-        recycler_view?.smoothScrollBy(0, view.top)
-//        recycler_view?.smoo
+        recycler_view?.smoothScrollBy(0, viewHolder.itemView.top)
         motion_photo_view.setBackgroundColor(ContextCompat.getColor(baseContext, color))
     }
 
