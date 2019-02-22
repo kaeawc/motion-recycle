@@ -10,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun onPhotoClicked(position: Int) {
 
-        Timber.i("photo at $position was clicked")
 
         val color = when (position) {
             0 -> R.color.green
@@ -47,16 +45,9 @@ class MainActivity : AppCompatActivity() {
             else -> R.color.teal
         }
 
-        val adapter = recycler_view?.adapter as? ProfileAdapter ?: return
-        val layoutManager = recycler_view?.layoutManager as? FastLayoutManager ?: return
         val viewHolder = getViewHolderAt(position) ?: return
-//        layoutManager.smoothScrollToPosition(recycler_view, RecyclerView.State(), position)
         recycler_view?.smoothScrollBy(0, viewHolder.itemView.top)
         motion_photo_view.setBackgroundColor(ContextCompat.getColor(baseContext, color))
-
-//        motion_photo_view?.isVisible = true
-//        motion_scene?.rebuildMotion()
-
         motion_header?.setTransition(R.id.expanded, R.id.hidden)
         motion_scene?.setTransitionListener(object: MotionLayout.TransitionListener {
 
@@ -75,9 +66,7 @@ class MainActivity : AppCompatActivity() {
         motion_scene?.setTransition(R.id.profileExpanded, R.id.likedPhoto)
         motion_scene?.transitionToEnd()
 
-        Timber.i("setting motion photo view click listener")
         cancel_button?.setOnClickListener {
-            Timber.i("motion_photo_view was clicked")
             cancel_button?.setOnClickListener(null)
             returnToProfile(position)
         }
@@ -85,7 +74,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun returnToProfile(position: Int) {
-        Timber.i("returnToProfile $position")
 
         motion_scene?.setTransitionListener(object: MotionLayout.TransitionListener {
 
@@ -129,14 +117,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getViewHolderAt(position: Int): PhotoViewHolder? {
-        Timber.i("getViewHolderAt $position")
         val itemCount = recycler_view?.adapter?.itemCount ?: return null
         if (itemCount <= 0) return null
         return getProfileViewHolder(position)
     }
 
     private fun getProfileViewHolder(position: Int): PhotoViewHolder? {
-        Timber.i("getProfileViewHolder $position")
 
 
         val view = (recycler_view?.layoutManager)?.findViewByPosition(position) ?: return null

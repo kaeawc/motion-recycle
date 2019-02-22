@@ -21,7 +21,7 @@
         android:id="@+id/profile_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Christina"
+        android:text="@string/danielle"
         android:textSize="30sp"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="24dp"
