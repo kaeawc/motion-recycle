@@ -11,11 +11,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:listitem="@layout/photo_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="co.hinge.motionrecycle.FastLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/motion_photo_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        tools:src="@tools:sample/avatars"
+        android:importantForAccessibility="no"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:alpha="0.5"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
