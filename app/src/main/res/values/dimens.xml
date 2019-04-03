@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="liked_content_horizontal_margin">12dp</dimen>
+</resources>

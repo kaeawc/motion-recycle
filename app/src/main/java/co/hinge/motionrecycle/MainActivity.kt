@@ -3,9 +3,12 @@ package co.hinge.motionrecycle
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.view.animation.DecelerateInterpolator
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.TOP
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
 import androidx.lifecycle.Lifecycle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -51,34 +54,43 @@ class MainActivity : AppCompatActivity() {
         val viewHolder = getViewHolderAt(position) ?: return
         val view = getLikedContentViewAt(viewHolder) ?: return
 
-        val totalHeight = resources.displayMetrics.heightPixels
-        val viewHolderOffset = viewHolder.itemView.top
-        recycler_view?.smoothScrollBy(0, viewHolderOffset, DecelerateInterpolator(4f))
-
         currentLikedContent = position
 
         applyViewToLikedContentPlaceholder(view)
 
-        val delay = ((150f * viewHolderOffset) / totalHeight).toLong()
+        view.alpha = 0f
 
-        Timber.i("delay: $delay totalHeight $totalHeight")
+        val margin = resources.getDimensionPixelSize(R.dimen.liked_content_horizontal_margin)
+        val placeholderTop = motion_header.height + viewHolder.itemView.top + margin
+        val placeholderHeight = if (placeholderTop < 0) {
+            viewHolder.itemView.height + placeholderTop
+        } else {
+            WRAP_CONTENT
+        }
 
-        Handler().postDelayed({
-            view.alpha = 0f
+        val placeholderId = R.id.motion_liked_content
+        val parentId = R.id.motion_scene
 
-            motion_header?.setTransition(R.id.expanded, R.id.hidden)
+        motion_header?.setTransition(R.id.expanded, R.id.hidden)
 
-            motion_scene?.apply {
-                stopListening()
-                setTransition(R.id.profileExpanded, R.id.likedContent)
-                transitionToEnd()
-            }
+        motion_scene.getConstraintSet(R.id.profileExpanded)?.apply {
+            constrainWidth(placeholderId, MATCH_PARENT)
+            constrainHeight(placeholderId, placeholderHeight)
+            connect(placeholderId, TOP, parentId, TOP, placeholderTop)
+            connect(placeholderId, START, parentId, START, margin)
+            connect(placeholderId, END, parentId, END, margin)
+        }
 
-            cancel_button?.setOnClickListener {
-                cancel_button?.setOnClickListener(null)
-                returnToProfile(position)
-            }
-        }, delay)
+        motion_scene?.apply {
+            stopListening()
+            setTransition(R.id.profileExpanded, R.id.likedContent)
+            transitionToEnd()
+        }
+
+        cancel_button?.setOnClickListener {
+            cancel_button?.setOnClickListener(null)
+            returnToProfile(position)
+        }
 
         like_blur?.setOnTouchListener { v, event ->
             true

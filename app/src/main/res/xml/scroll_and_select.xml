@@ -69,7 +69,6 @@
             android:id="@id/motion_liked_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="116dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             motion:layout_constraintTop_toTopOf="parent"
@@ -163,7 +162,6 @@
             android:id="@id/motion_liked_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="116dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             motion:layout_constraintTop_toTopOf="parent"
@@ -244,7 +242,8 @@
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:progress="1" />
+            motion:progress="1"
+            android:alpha="-1" />
         <Constraint
             android:id="@id/recycler_view"
             android:layout_width="0dp"
@@ -275,7 +274,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
-            android:alpha="1"
+            android:alpha="2"
             />
         <Constraint
             android:id="@id/liked_subject_name"

@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/scroll_and_select"
-    android:background="@color/black"
     tools:context="co.hinge.motionrecycle.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,8 +21,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <include layout="@layout/header" />
-
     <View
         android:id="@+id/like_blur"
         android:layout_width="match_parent"
@@ -34,6 +31,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
+
+    <ImageView
+        android:id="@id/motion_liked_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/liked_content_bubble"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <include layout="@layout/header" />
 
     <TextView
         android:id="@+id/comment_bubble"
@@ -68,18 +78,6 @@
         app:layout_constraintBottom_toTopOf="@id/motion_liked_content"
         />
 
-    <ImageView
-        android:id="@id/motion_liked_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:layout_constraintHeight_min="400dp"
-        app:layout_constrainedHeight="true"
-        android:background="@drawable/liked_content_bubble"
-        android:importantForAccessibility="no"
-        app:layout_constraintTop_toTopOf="@id/recycler_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-    />
 
     <TextView
         android:id="@+id/send_like_button"
