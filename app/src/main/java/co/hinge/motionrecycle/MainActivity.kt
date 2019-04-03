@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -121,27 +119,6 @@ class MainActivity : AppCompatActivity() {
         }
         motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
         motion_scene?.transitionToEnd()
-    }
-
-    private fun hideAdapterItem(position: Int) {
-        val viewHolder = getViewHolderAt(position) ?: return
-        (recycler_view?.adapter as? ProfileAdapter)?.hide(viewHolder)
-    }
-
-    private fun notifyItemChanged(position: Int) {
-        val viewHolder = getViewHolderAt(position) ?: return
-        (recycler_view?.adapter as? ProfileAdapter)?.bindViewHolder(viewHolder, position)
-    }
-
-    private fun hidePlaceholder() {
-        motion_scene?.postDelayed({
-            motion_header?.setTransition(R.id.expanded, R.id.collapsed)
-            motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
-            motion_scene?.setTransitionListener(null)
-            motion_scene?.progress = 0.01f
-            motion_scene?.progress = 0f
-            motion_liked_content?.isVisible = false
-        }, 1)
     }
 
     private fun getViewHolderAt(position: Int): BaseViewHolder? {
