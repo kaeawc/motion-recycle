@@ -3,6 +3,7 @@ package co.hinge.motionrecycle
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.Lifecycle
@@ -47,37 +48,44 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onContentClicked(position: Int) {
-        Timber.i("onContentClicked $position")
+        val viewHolder = getViewHolderAt(position) ?: return
+        val view = getLikedContentViewAt(viewHolder) ?: return
 
-        val view = getLikedContentViewAt(position) ?: return
+        val totalHeight = resources.displayMetrics.heightPixels
+        val viewHolderOffset = viewHolder.itemView.top
+        recycler_view?.smoothScrollBy(0, viewHolderOffset, DecelerateInterpolator(4f))
+
         currentLikedContent = position
 
         applyViewToLikedContentPlaceholder(view)
 
-        view.alpha = 0f
+        val delay = ((150f * viewHolderOffset) / totalHeight).toLong()
 
-        motion_header?.setTransition(R.id.expanded, R.id.hidden)
+        Timber.i("delay: $delay totalHeight $totalHeight")
 
-        motion_scene?.apply {
-            stopListening()
-            setTransition(R.id.profileExpanded, R.id.likedContent)
-            transitionToEnd()
-        }
+        Handler().postDelayed({
+            view.alpha = 0f
 
-        cancel_button?.setOnClickListener {
-            cancel_button?.setOnClickListener(null)
-            returnToProfile(position)
-        }
+            motion_header?.setTransition(R.id.expanded, R.id.hidden)
+
+            motion_scene?.apply {
+                stopListening()
+                setTransition(R.id.profileExpanded, R.id.likedContent)
+                transitionToEnd()
+            }
+
+            cancel_button?.setOnClickListener {
+                cancel_button?.setOnClickListener(null)
+                returnToProfile(position)
+            }
+        }, delay)
 
         like_blur?.setOnTouchListener { v, event ->
             true
         }
     }
 
-    private fun getLikedContentViewAt(position: Int): View? {
-        val viewHolder = getViewHolderAt(position) ?: return null
-        recycler_view?.smoothScrollBy(0, viewHolder.itemView.top, DecelerateInterpolator(4f))
-
+    private fun getLikedContentViewAt(viewHolder: BaseViewHolder): View? {
         return when (viewHolder) {
             is PhotoViewHolder -> viewHolder.photo_view
             else -> viewHolder.prompt_bubble
@@ -115,7 +123,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         motion_scene?.after {
-            getLikedContentViewAt(position)?.alpha = 1f
+            val viewHolder = getViewHolderAt(position) ?: return@after
+            getLikedContentViewAt(viewHolder)?.alpha = 1f
         }
         motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
         motion_scene?.transitionToEnd()
