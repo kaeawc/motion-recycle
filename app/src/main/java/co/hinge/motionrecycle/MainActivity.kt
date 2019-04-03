@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.TOP
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
 import androidx.lifecycle.Lifecycle
+import co.hinge.motionrecycle.Blur.blurScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -59,6 +60,10 @@ class MainActivity : AppCompatActivity() {
         applyViewToLikedContentPlaceholder(view)
 
         view.alpha = 0f
+
+        Blur.blurScreen(this, motion_scene)
+
+        like_blur?.setImageDrawable(Blur.loadLatest(this))
 
         val margin = resources.getDimensionPixelSize(R.dimen.liked_content_horizontal_margin)
         val placeholderTop = motion_header.height + viewHolder.itemView.top + margin
