@@ -3,6 +3,8 @@ package co.hinge.motionrecycle
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.animation.DecelerateInterpolator
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -48,13 +50,34 @@ class MainActivity : AppCompatActivity() {
         Timber.i("onContentClicked $position")
 
         val viewHolder = getViewHolderAt(position) ?: return
-        recycler_view?.smoothScrollBy(0, viewHolder.itemView.top)
+        recycler_view?.smoothScrollBy(0, viewHolder.itemView.top, DecelerateInterpolator())
 
         val view = when (viewHolder) {
             is PhotoViewHolder -> viewHolder.photo_view
             else -> viewHolder.prompt_bubble
         }
 
+        applyViewToLikedContentPlaceholder(view)
+
+        motion_header?.setTransition(R.id.expanded, R.id.hidden)
+
+        motion_scene?.apply {
+            stopListening()
+            setTransition(R.id.profileExpanded, R.id.likedContent)
+            transitionToEnd()
+        }
+
+        cancel_button?.setOnClickListener {
+            cancel_button?.setOnClickListener(null)
+            returnToProfile()
+        }
+
+        like_blur?.setOnTouchListener { v, event ->
+            true
+        }
+    }
+
+    private fun applyViewToLikedContentPlaceholder(view: View) {
         view.apply {
             isDrawingCacheEnabled = true
 
@@ -73,20 +96,6 @@ class MainActivity : AppCompatActivity() {
             motion_liked_content?.setImageBitmap(bitmap)
 
             isDrawingCacheEnabled = false
-        }
-
-        motion_header?.setTransition(R.id.expanded, R.id.hidden)
-        motion_scene?.stopListening()
-        motion_scene?.setTransition(R.id.profileExpanded, R.id.likedContent)
-        motion_scene?.transitionToEnd()
-
-        cancel_button?.setOnClickListener {
-            cancel_button?.setOnClickListener(null)
-            returnToProfile()
-        }
-
-        like_blur?.setOnTouchListener { v, event ->
-            true
         }
     }
 
