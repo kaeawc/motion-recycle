@@ -19,7 +19,6 @@ class PhotoViewHolder(val clicks: PublishSubject<Int>, view: View) : BaseViewHol
         }
         photo_view.setBackgroundColor(ContextCompat.getColor(itemView.context, color))
         itemView.setOnClickListener { view ->
-            view.setOnClickListener(null)
             clicks.onNext(adapterPosition)
         }
     }

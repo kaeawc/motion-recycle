@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.photo_item.*
 import kotlinx.android.synthetic.main.prompt_item.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,9 +36,16 @@ class MainActivity : AppCompatActivity() {
         motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
     }
 
-    private fun onContentClicked(position: Int) {
+    override fun onBackPressed() {
+        if (motion_scene?.currentState == R.id.likedContent) {
+            returnToProfile()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
-        if (motion_scene?.currentState == R.id.likedContent) return returnToProfile(position)
+    private fun onContentClicked(position: Int) {
+        Timber.i("onContentClicked $position")
 
         val viewHolder = getViewHolderAt(position) ?: return
         recycler_view?.smoothScrollBy(0, viewHolder.itemView.top)
@@ -68,35 +76,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         motion_header?.setTransition(R.id.expanded, R.id.hidden)
-        motion_scene?.setTransitionListener(object: MotionLayout.TransitionListener {
-
-            var hidden = false
-
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, progress: Float) {
-                if (progress > 0.1f && !hidden) {
-                    hidden = true
-                    hideAdapterItem(position)
-                }
-            }
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {}
-        })
+        motion_scene?.stopListening()
         motion_scene?.setTransition(R.id.profileExpanded, R.id.likedContent)
         motion_scene?.transitionToEnd()
 
         cancel_button?.setOnClickListener {
             cancel_button?.setOnClickListener(null)
-            returnToProfile(position)
+            returnToProfile()
         }
 
+        like_blur?.setOnTouchListener { v, event ->
+            true
+        }
     }
 
-    private fun returnToProfile(position: Int) {
+    private fun returnToProfile() {
 
-        motion_scene?.after {
-            notifyItemChanged(position)
+        like_blur?.setOnTouchListener { v, event ->
+            false
         }
+
+        motion_scene?.stopListening()
         motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
         motion_scene?.transitionToEnd()
     }
