@@ -2,15 +2,11 @@ package co.hinge.motionrecycle
 
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.photo_item.*
 
-class PhotoViewHolder(val clicks: PublishSubject<Int>, view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
-
-    override val containerView: View?
-        get() = itemView
+class PhotoViewHolder(val clicks: PublishSubject<Int>, view: View) : BaseViewHolder(view), LayoutContainer {
 
     fun onBind(photo: Photo) {
         val color = when (adapterPosition) {
@@ -22,13 +18,13 @@ class PhotoViewHolder(val clicks: PublishSubject<Int>, view: View) : RecyclerVie
             else -> R.color.teal
         }
         photo_view.setBackgroundColor(ContextCompat.getColor(itemView.context, color))
-        photo_view.setOnClickListener { view ->
+        itemView.setOnClickListener { view ->
             view.setOnClickListener(null)
             clicks.onNext(adapterPosition)
         }
     }
 
     fun hide() {
-        photo_view.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.transparent))
+//        photo_view.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.transparent))
     }
 }

@@ -58,7 +58,7 @@ dependencies {
     implementation "com.android.billingclient:billing:${versions.billing}"
 
     // Navigation Component
-    implementation("android.arch.navigation:navigation-fragment:${versions.navigationComponent}") {
+    implementation("androidx.navigation:navigation-fragment:${versions.navigationComponent}") {
         exclude group: 'androidx.fragment', module: 'fragment'
     }
 

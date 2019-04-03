@@ -1,15 +1,17 @@
 package co.hinge.motionrecycle
 
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.*
+import kotlinx.android.synthetic.main.photo_item.*
+import kotlinx.android.synthetic.main.prompt_item.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,27 +29,44 @@ class MainActivity : AppCompatActivity() {
         adapter.getClickFlow()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(::onPhotoClicked)
+                .subscribe(::onContentClicked)
                 .disposeOn(this, Lifecycle.Event.ON_PAUSE)
 
         motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
     }
 
-    private fun onPhotoClicked(position: Int) {
+    private fun onContentClicked(position: Int) {
 
-
-        val color = when (position) {
-            0 -> R.color.green
-            1 -> R.color.blue
-            2 -> R.color.red
-            3 -> R.color.orange
-            4 -> R.color.yellow
-            else -> R.color.teal
-        }
+        if (motion_scene?.currentState == R.id.likedContent) return returnToProfile(position)
 
         val viewHolder = getViewHolderAt(position) ?: return
         recycler_view?.smoothScrollBy(0, viewHolder.itemView.top)
-        motion_photo_view.setBackgroundColor(ContextCompat.getColor(baseContext, color))
+
+        val view = when (viewHolder) {
+            is PhotoViewHolder -> viewHolder.photo_view
+            else -> viewHolder.prompt_bubble
+        }
+
+        view.apply {
+            isDrawingCacheEnabled = true
+
+            val cachedBitmap = try {
+                drawingCache ?: return
+            } catch (ex: Exception) {
+                return
+            }
+            val bitmap = try {
+                Bitmap.createBitmap(cachedBitmap)
+            } catch (ex: OutOfMemoryError) {
+                Runtime.getRuntime().gc()
+                null
+            }
+
+            motion_liked_content?.setImageBitmap(bitmap)
+
+            isDrawingCacheEnabled = false
+        }
+
         motion_header?.setTransition(R.id.expanded, R.id.hidden)
         motion_scene?.setTransitionListener(object: MotionLayout.TransitionListener {
 
@@ -63,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {}
         })
-        motion_scene?.setTransition(R.id.profileExpanded, R.id.likedPhoto)
+        motion_scene?.setTransition(R.id.profileExpanded, R.id.likedContent)
         motion_scene?.transitionToEnd()
 
         cancel_button?.setOnClickListener {
@@ -75,23 +94,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun returnToProfile(position: Int) {
 
-        motion_scene?.setTransitionListener(object: MotionLayout.TransitionListener {
-
-            var reset = false
-
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, progress: Float) {
-                if (progress > 0.9f && !reset) {
-                    reset = true
-                    notifyItemChanged(position)
-                }
-            }
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                hidePlaceholder()
-            }
-        })
-        motion_scene?.setTransition(R.id.likedPhoto, R.id.profileExpanded)
+        motion_scene?.after {
+            notifyItemChanged(position)
+        }
+        motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
         motion_scene?.transitionToEnd()
     }
 
@@ -112,17 +118,17 @@ class MainActivity : AppCompatActivity() {
             motion_scene?.setTransitionListener(null)
             motion_scene?.progress = 0.01f
             motion_scene?.progress = 0f
-            motion_photo_view?.isVisible = false
+            motion_liked_content?.isVisible = false
         }, 1)
     }
 
-    private fun getViewHolderAt(position: Int): PhotoViewHolder? {
+    private fun getViewHolderAt(position: Int): BaseViewHolder? {
         val itemCount = recycler_view?.adapter?.itemCount ?: return null
         if (itemCount <= 0) return null
         return getProfileViewHolder(position)
     }
 
-    private fun getProfileViewHolder(position: Int): PhotoViewHolder? {
+    private fun getProfileViewHolder(position: Int): BaseViewHolder? {
 
 
         val view = (recycler_view?.layoutManager)?.findViewByPosition(position) ?: return null
@@ -134,7 +140,7 @@ class MainActivity : AppCompatActivity() {
             null
         }
 
-        return viewHolder as? PhotoViewHolder
+        return viewHolder as? BaseViewHolder
     }
 
 

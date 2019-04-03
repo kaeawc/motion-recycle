@@ -7,7 +7,7 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
 
-open class ProfileAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
+open class ProfileAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     val clicks = PublishSubject.create<Int>()
 
@@ -18,25 +18,39 @@ open class ProfileAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.photo_item
+        return when (position % 2) {
+            0 -> R.layout.photo_item
+            else -> R.layout.prompt_item
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(viewType, parent, false)
-        return PhotoViewHolder(clicks, view)
+        return when (viewType) {
+            R.layout.photo_item -> PhotoViewHolder(clicks, view)
+            R.layout.prompt_item -> PromptViewHolder(clicks, view)
+            else -> throw IllegalArgumentException("Impossible")
+        }
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return 12
     }
 
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val photo = items.getOrNull(position) ?: return
-        holder.onBind(photo)
+        when (holder) {
+            is PhotoViewHolder -> holder.onBind(photo)
+            is PromptViewHolder -> holder.onBind(Prompt("What is this?", "Just the best thing ever!"))
+        }
     }
 
-    open fun hide(holder: PhotoViewHolder) {
-        holder.hide()
+    open fun hide(holder: BaseViewHolder) {
+
+        when (holder) {
+            is PhotoViewHolder -> holder.hide()
+            is PromptViewHolder -> holder.hide()
+        }
     }
 }

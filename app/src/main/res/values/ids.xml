@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="motion_liked_content" type="id"></item>
 </resources>
