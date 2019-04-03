@@ -18,6 +18,8 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
+    var currentLikedContent = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (motion_scene?.currentState == R.id.likedContent) {
-            returnToProfile()
+            returnToProfile(currentLikedContent)
         } else {
             super.onBackPressed()
         }
@@ -49,15 +51,12 @@ class MainActivity : AppCompatActivity() {
     private fun onContentClicked(position: Int) {
         Timber.i("onContentClicked $position")
 
-        val viewHolder = getViewHolderAt(position) ?: return
-        recycler_view?.smoothScrollBy(0, viewHolder.itemView.top, DecelerateInterpolator())
-
-        val view = when (viewHolder) {
-            is PhotoViewHolder -> viewHolder.photo_view
-            else -> viewHolder.prompt_bubble
-        }
+        val view = getLikedContentViewAt(position) ?: return
+        currentLikedContent = position
 
         applyViewToLikedContentPlaceholder(view)
+
+        view.alpha = 0f
 
         motion_header?.setTransition(R.id.expanded, R.id.hidden)
 
@@ -69,11 +68,21 @@ class MainActivity : AppCompatActivity() {
 
         cancel_button?.setOnClickListener {
             cancel_button?.setOnClickListener(null)
-            returnToProfile()
+            returnToProfile(position)
         }
 
         like_blur?.setOnTouchListener { v, event ->
             true
+        }
+    }
+
+    private fun getLikedContentViewAt(position: Int): View? {
+        val viewHolder = getViewHolderAt(position) ?: return null
+        recycler_view?.smoothScrollBy(0, viewHolder.itemView.top, DecelerateInterpolator(4f))
+
+        return when (viewHolder) {
+            is PhotoViewHolder -> viewHolder.photo_view
+            else -> viewHolder.prompt_bubble
         }
     }
 
@@ -99,13 +108,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun returnToProfile() {
+    private fun returnToProfile(position: Int) {
+
+        currentLikedContent = -1
 
         like_blur?.setOnTouchListener { v, event ->
             false
         }
 
-        motion_scene?.stopListening()
+        motion_scene?.after {
+            getLikedContentViewAt(position)?.alpha = 1f
+        }
         motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
         motion_scene?.transitionToEnd()
     }

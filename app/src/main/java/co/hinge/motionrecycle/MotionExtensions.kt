@@ -8,9 +8,7 @@ fun MotionLayout.after(completion: () -> Unit) {
         override fun onTransitionStarted(layout: MotionLayout?, startId: Int, endId: Int) {}
         override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
         override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
-            this@after.postDelayed({
-                completion()
-            }, 1)
+            completion()
         }
     })
 }
