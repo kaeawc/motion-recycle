@@ -1,9 +1,11 @@
 package co.hinge.motionrecycle
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.TOP
@@ -43,14 +45,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (motion_scene?.currentState == R.id.likedContent) {
-            returnToProfile(currentLikedContent)
-        } else {
-            super.onBackPressed()
+
+        when (motion_scene?.currentState) {
+            R.id.likedContent -> returnToProfile(currentLikedContent)
+            R.id.writingCommentForLike -> motion_scene?.apply {
+                stopListening()
+                setTransition(R.id.writingCommentForLike, R.id.likedContent)
+                transitionToEnd()
+                likedContentState(currentLikedContent)
+            }
+            else -> super.onBackPressed()
         }
     }
 
     private fun onContentClicked(position: Int) {
+        setupLikedContentTransition(position)
+        likedContentState(position)
+    }
+
+    private fun setupLikedContentTransition(position: Int) {
+
         val viewHolder = getViewHolderAt(position) ?: return
         val view = getLikedContentViewAt(viewHolder) ?: return
 
@@ -93,6 +107,11 @@ class MainActivity : AppCompatActivity() {
             setTransition(R.id.profileExpanded, R.id.likedContent)
             transitionToEnd()
         }
+    }
+
+    private fun likedContentState(position: Int) {
+
+        motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
 
         cancel_button?.setOnClickListener {
             cancel_button?.setOnClickListener(null)
@@ -101,6 +120,20 @@ class MainActivity : AppCompatActivity() {
 
         like_blur?.setOnTouchListener { v, event ->
             true
+        }
+
+        comment_bubble?.setOnClickListener {
+            motion_scene?.after {
+
+                if (comment_composition_view?.isFocused == true) {
+                    showKeyboard()
+                } else {
+                    comment_composition_view?.requestFocus()
+                }
+            }
+            motion_scene?.setTransition(R.id.likedContent, R.id.writingCommentForLike)
+            motion_scene?.transitionToEnd()
+            motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
         }
     }
 
@@ -170,5 +203,10 @@ class MainActivity : AppCompatActivity() {
         return viewHolder as? BaseViewHolder
     }
 
+    private fun showKeyboard() {
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
+        val windowToken = currentFocus?.windowToken ?: return
+        inputManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
+    }
 
 }

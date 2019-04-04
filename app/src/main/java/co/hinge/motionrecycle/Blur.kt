@@ -59,9 +59,9 @@ object Blur {
          * Whatever the screen size is, we want either something scaled
          * down by 2x or a 2MB limit on the resulting resized bitmap.
          */
-        val maxByteCount = Math.min((returnedBitmap.byteCount / 4f).toInt(), 2_000_000)
-        val scale = getSmallerScale(maxByteCount, width, height, 1f)
-        return resizeBitmap(returnedBitmap, scale)
+//        val maxByteCount = Math.min((returnedBitmap.byteCount / 4f).toInt(), 2_000_000)
+//        val scale = getSmallerScale(maxByteCount, width, height, 1f)
+        return returnedBitmap // resizeBitmap(returnedBitmap, scale)
     }
 
     private fun getSmallerScale(maxByteCount: Int, width: Int, height: Int, current: Float): Float {

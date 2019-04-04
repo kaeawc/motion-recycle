@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:motion="http://schemas.android.com/apk/res-auto">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:motion="http://schemas.android.com/apk/res-auto" xmlns:app="http://schemas.android.com/tools">
 
     <Transition
         android:id="@+id/headerCollapseTransition"
@@ -48,6 +48,22 @@
         </KeyFrameSet>
 
     </Transition>
+
+    <Transition
+        android:id="@+id/addCommentToLike"
+        motion:constraintSetStart="@id/likedContent"
+        motion:constraintSetEnd="@id/writingCommentForLike"
+        motion:duration="400"
+        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        />
+
+    <Transition
+            android:id="@+id/doneAddingCommentToLike"
+            motion:constraintSetStart="@id/writingCommentForLike"
+            motion:constraintSetEnd="@id/likedContent"
+            motion:duration="400"
+            motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+    />
 
     <ConstraintSet android:id="@+id/profileExpanded">
         <Constraint
@@ -491,8 +507,6 @@
             android:id="@+id/comment_composition_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            motion:layout_constraintHeight_min="60dp"
-            motion:layout_constrainedHeight="true"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toStartOf="@id/comment_done_button"
             motion:layout_constraintBottom_toBottomOf="parent"
