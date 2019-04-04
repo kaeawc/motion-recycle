@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="profile_horizontal_margin">12dp</dimen>
-    <dimen name="liked_content_horizontal_margin">32dp</dimen>
+    <dimen name="profile_horizontal_margin">@dimen/margin_12</dimen>
+    <dimen name="liked_content_horizontal_margin">@dimen/margin_32</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
 </resources>

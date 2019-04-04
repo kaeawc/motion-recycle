@@ -65,9 +65,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         when (motion_scene?.currentState) {
+            -1 -> motion_scene?.transitionToEnd()
             R.id.likedContent -> returnToProfile(currentLikedContent)
-            R.id.writingCommentForTallContent,
-            R.id.writingCommentForShortContent -> hideKeyboardNow()
+            R.id.writingCommentForTallContent -> {
+//                motion_scene?.setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
+                hideKeyboardNow()
+            }
+            R.id.writingCommentForShortContent -> {
+//                motion_scene?.setTransition(R.id.writingCommentForShortContent, R.id.likedContent)
+                hideKeyboardNow()
+            }
             else -> super.onBackPressed()
         }
     }
@@ -83,6 +90,7 @@ class MainActivity : AppCompatActivity() {
 
         val viewHolder = getViewHolderAt(position) ?: return
         val view = getLikedContentViewAt(viewHolder) ?: return
+        if (view.alpha != 1f) return returnToProfile(position)
 
         currentLikedContent = position
 
@@ -134,12 +142,23 @@ class MainActivity : AppCompatActivity() {
                 R.id.writingCommentForShortContent)) return
 
         motion_scene?.apply {
+
+            val tall = motion_liked_content?.run { height > width } ?: false
+            val commentState = when (tall) {
+                true -> R.id.writingCommentForTallContent
+                else -> R.id.writingCommentForShortContent
+            }
+
             stopListening()
             if (viewState.visible) {
-                setTransition(R.id.likedContent, R.id.writingCommentForTallContent)
+                setTransition(R.id.likedContentShort, commentState)
                 transitionToEnd()
-            } else {
+            } else if (tall) {
                 setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
+                transitionToEnd()
+                likedContentState(currentLikedContent)
+            } else {
+                setTransition(R.id.finishingCommentForShortContent, R.id.likedContent)
                 transitionToEnd()
                 likedContentState(currentLikedContent)
             }
@@ -159,7 +178,6 @@ class MainActivity : AppCompatActivity() {
         motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
 
         cancel_button?.setOnClickListener {
-            cancel_button?.setOnClickListener(null)
             returnToProfile(position)
         }
 
@@ -168,12 +186,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         comment_bubble?.setOnClickListener {
-            comment_bubble?.setOnClickListener(null)
             setupCommentComposition()
         }
+
+        comment_done_button?.setOnClickListener(null)
     }
 
     private fun setupCommentComposition() {
+        Timber.i("setupCommentComposition")
 
         comment_composition_view?.isFocusableInTouchMode = true
         comment_composition_view?.isFocusable = true
@@ -181,7 +201,6 @@ class MainActivity : AppCompatActivity() {
         showKeyboardNow()
 
         comment_done_button?.setOnClickListener {
-//            comment_done_button?.setOnClickListener(null)
             onBackPressed()
         }
     }
@@ -222,16 +241,21 @@ class MainActivity : AppCompatActivity() {
 
         currentLikedContent = -1
 
-        like_blur?.setOnTouchListener { v, event ->
-            false
-        }
-
         motion_scene?.after {
+
+            like_blur?.setOnTouchListener { v, event ->
+                false
+            }
+            
             val viewHolder = getViewHolderAt(position) ?: return@after
             getLikedContentViewAt(viewHolder)?.alpha = 1f
         }
         motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
         motion_scene?.transitionToEnd()
+
+        cancel_button?.setOnClickListener(null)
+        comment_bubble?.setOnClickListener(null)
+        comment_done_button?.setOnClickListener(null)
     }
 
     private fun getViewHolderAt(position: Int): BaseViewHolder? {
