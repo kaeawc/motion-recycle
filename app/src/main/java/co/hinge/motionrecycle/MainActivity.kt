@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT
@@ -123,14 +124,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         comment_bubble?.setOnClickListener {
-            motion_scene?.after {
+            comment_composition_view?.requestFocus()
+            showKeyboard(delay = 100)
 
-                if (comment_composition_view?.isFocused == true) {
-                    showKeyboard()
-                } else {
-                    comment_composition_view?.requestFocus()
-                }
-            }
             motion_scene?.setTransition(R.id.likedContent, R.id.writingCommentForLike)
             motion_scene?.transitionToEnd()
             motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
@@ -203,10 +199,15 @@ class MainActivity : AppCompatActivity() {
         return viewHolder as? BaseViewHolder
     }
 
-    private fun showKeyboard() {
+    private fun showKeyboard(delay: Long = 0L) {
+        Handler().postDelayed({
+            showKeyboardNow()
+        }, delay)
+    }
+
+    private fun showKeyboardNow() {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
         val windowToken = currentFocus?.windowToken ?: return
         inputManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
     }
-
 }
