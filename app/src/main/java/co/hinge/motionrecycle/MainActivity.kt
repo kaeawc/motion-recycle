@@ -128,7 +128,10 @@ class MainActivity : AppCompatActivity() {
     private fun onKeyboardViewState(viewState: KeyboardViewState) {
         Timber.i("onKeyboardViewState ${viewState.visible}")
 
-        if (motion_scene?.currentState !in setOf(R.id.likedContent, R.id.writingCommentForTallContent)) return
+        if (motion_scene?.currentState !in setOf(
+                R.id.likedContent,
+                R.id.writingCommentForTallContent,
+                R.id.writingCommentForShortContent)) return
 
         motion_scene?.apply {
             stopListening()
