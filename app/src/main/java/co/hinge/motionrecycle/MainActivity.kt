@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recycler_view?.adapter = ProfileAdapter()
+
+        comment_composition_view?.isFocusable = false
+        comment_composition_view?.isFocusableInTouchMode = false
     }
 
     override fun onResume() {
@@ -61,16 +64,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Timber.i("onBackPressed")
-
         when (motion_scene?.currentState) {
             R.id.likedContent -> returnToProfile(currentLikedContent)
-            R.id.writingCommentForLike -> motion_scene?.apply {
-                stopListening()
-                setTransition(R.id.writingCommentForLike, R.id.likedContent)
-                transitionToEnd()
-                likedContentState(currentLikedContent)
-            }
+            R.id.writingCommentForTallContent,
+            R.id.writingCommentForShortContent -> hideKeyboardNow()
             else -> super.onBackPressed()
         }
     }
@@ -129,17 +126,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onKeyboardViewState(viewState: KeyboardViewState) {
-        Timber.i("onKeyboardViewState")
+        Timber.i("onKeyboardViewState ${viewState.visible}")
 
-        if (motion_scene?.currentState !in setOf(R.id.likedContent, R.id.writingCommentForLike)) return
+        if (motion_scene?.currentState !in setOf(R.id.likedContent, R.id.writingCommentForTallContent)) return
 
         motion_scene?.apply {
             stopListening()
             if (viewState.visible) {
-                setTransition(R.id.likedContent, R.id.writingCommentForLike)
+                setTransition(R.id.likedContent, R.id.writingCommentForTallContent)
                 transitionToEnd()
             } else {
-                setTransition(R.id.writingCommentForLike, R.id.likedContent)
+                setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
                 transitionToEnd()
                 likedContentState(currentLikedContent)
             }
@@ -168,8 +165,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         comment_bubble?.setOnClickListener {
-            comment_composition_view?.requestFocus()
-            showKeyboardNow()
+            comment_bubble?.setOnClickListener(null)
+            setupCommentComposition()
+        }
+    }
+
+    private fun setupCommentComposition() {
+
+        comment_composition_view?.isFocusableInTouchMode = true
+        comment_composition_view?.isFocusable = true
+        comment_composition_view?.requestFocus()
+        showKeyboardNow()
+
+        comment_done_button?.setOnClickListener {
+//            comment_done_button?.setOnClickListener(null)
+            onBackPressed()
         }
     }
 
@@ -256,5 +266,12 @@ class MainActivity : AppCompatActivity() {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
         val windowToken = currentFocus?.windowToken ?: return
         inputManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    private fun hideKeyboardNow() {
+        Timber.i("hideKeyboardNow")
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
+        val windowToken = currentFocus?.windowToken ?: return
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 }
