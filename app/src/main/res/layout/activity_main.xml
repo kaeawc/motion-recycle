@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/scroll_and_select"
-    android:background="@color/black"
     tools:context="co.hinge.motionrecycle.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -67,7 +66,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/motion_liked_content"
     />
-
 
     <TextView
             android:id="@+id/send_like_button"
