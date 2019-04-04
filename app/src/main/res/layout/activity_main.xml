@@ -117,4 +117,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <EditText
+            android:id="@+id/comment_composition_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:hint="Add a comment"
+            app:layout_constraintHeight_min="60dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/comment_done_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+    />
+
+    <TextView
+            android:id="@+id/comment_done_button"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:text="Done"
+            android:textColor="@color/indigo"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@id/comment_composition_view"
+            app:layout_constraintStart_toEndOf="@id/comment_composition_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+    />
+
 </androidx.constraintlayout.motion.widget.MotionLayout>
