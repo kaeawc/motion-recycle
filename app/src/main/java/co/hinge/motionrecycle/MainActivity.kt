@@ -65,11 +65,9 @@ class MainActivity : AppCompatActivity() {
             -1 -> motion_scene?.transitionToEnd()
             R.id.likedContent -> returnToProfile(currentLikedContent)
             R.id.writingCommentForTallContent -> {
-//                motion_scene?.setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
                 hideKeyboardNow()
             }
             R.id.writingCommentForShortContent -> {
-//                motion_scene?.setTransition(R.id.writingCommentForShortContent, R.id.likedContent)
                 hideKeyboardNow()
             }
             else -> super.onBackPressed()
@@ -144,17 +142,21 @@ class MainActivity : AppCompatActivity() {
             }
 
             stopListening()
-            if (viewState.visible) {
-                setTransition(R.id.likedContentShort, commentState)
-                transitionToEnd()
-            } else if (tall) {
-                setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
-                transitionToEnd()
-                likedContentState(currentLikedContent)
-            } else {
-                setTransition(R.id.finishingCommentForShortContent, R.id.likedContent)
-                transitionToEnd()
-                likedContentState(currentLikedContent)
+            when {
+                viewState.visible -> {
+                    setTransition(R.id.likedContentShort, commentState)
+                    transitionToEnd()
+                }
+                tall -> {
+                    setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
+                    transitionToEnd()
+                    likedContentState(currentLikedContent)
+                }
+                else -> {
+                    setTransition(R.id.finishingCommentForShortContent, R.id.likedContent)
+                    transitionToEnd()
+                    likedContentState(currentLikedContent)
+                }
             }
 
             val likedContentBackground = when (viewState.visible) {
