@@ -14,24 +14,28 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.BOTTOM
 import androidx.lifecycle.Lifecycle
+import arrow.core.Success
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.photo_item.*
 import kotlinx.android.synthetic.main.prompt_item.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
     var currentLikedContent = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Timber.i("onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recycler_view?.adapter = ProfileAdapter()
     }
 
     override fun onResume() {
+        Timber.i("onResume")
         super.onResume()
 
         val adapter = (recycler_view?.adapter as? ProfileAdapter) ?: return
@@ -42,10 +46,22 @@ class MainActivity : AppCompatActivity() {
                 .subscribe(::onContentClicked)
                 .disposeOn(this, Lifecycle.Event.ON_PAUSE)
 
+        Keyboard.prepareToResize(this)
+            .doOnNext {
+                    result ->
+
+                if (result is Success) {
+                    onKeyboardViewState(result.value)
+                }
+            }
+            .subscribe()
+            .disposeOn(this, Lifecycle.Event.ON_DESTROY)
+
         motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
     }
 
     override fun onBackPressed() {
+        Timber.i("onBackPressed")
 
         when (motion_scene?.currentState) {
             R.id.likedContent -> returnToProfile(currentLikedContent)
@@ -60,11 +76,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onContentClicked(position: Int) {
+        Timber.i("onContentClicked")
         setupLikedContentTransition(position)
         likedContentState(position)
     }
 
     private fun setupLikedContentTransition(position: Int) {
+        Timber.i("setupLikedContentTransition")
 
         val viewHolder = getViewHolderAt(position) ?: return
         val view = getLikedContentViewAt(viewHolder) ?: return
@@ -110,7 +128,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun onKeyboardViewState(viewState: KeyboardViewState) {
+        Timber.i("onKeyboardViewState")
+
+        if (motion_scene?.currentState !in setOf(R.id.likedContent, R.id.writingCommentForLike)) return
+
+        motion_scene?.apply {
+            stopListening()
+            if (viewState.visible) {
+                setTransition(R.id.likedContent, R.id.writingCommentForLike)
+                transitionToEnd()
+            } else {
+                setTransition(R.id.writingCommentForLike, R.id.likedContent)
+                transitionToEnd()
+                likedContentState(currentLikedContent)
+            }
+
+            val likedContentBackground = when (viewState.visible) {
+                true -> 0
+                else -> R.drawable.liked_content_bubble
+            }
+
+            motion_liked_content?.setBackgroundResource(likedContentBackground)
+        }
+    }
+
     private fun likedContentState(position: Int) {
+        Timber.i("likedContentState")
 
         motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
 
@@ -126,14 +170,11 @@ class MainActivity : AppCompatActivity() {
         comment_bubble?.setOnClickListener {
             comment_composition_view?.requestFocus()
             showKeyboard(delay = 100)
-
-            motion_scene?.setTransition(R.id.likedContent, R.id.writingCommentForLike)
-            motion_scene?.transitionToEnd()
-            motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
         }
     }
 
     private fun getLikedContentViewAt(viewHolder: BaseViewHolder): View? {
+        Timber.i("getLikedContentViewAt")
         return when (viewHolder) {
             is PhotoViewHolder -> viewHolder.photo_view
             else -> viewHolder.prompt_bubble
@@ -141,6 +182,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun applyViewToLikedContentPlaceholder(view: View) {
+        Timber.i("applyViewToLikedContentPlaceholder")
         view.apply {
             isDrawingCacheEnabled = true
 
@@ -163,6 +205,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun returnToProfile(position: Int) {
+        Timber.i("returnToProfile")
 
         currentLikedContent = -1
 
@@ -179,12 +222,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getViewHolderAt(position: Int): BaseViewHolder? {
+        Timber.i("getViewHolderAt")
         val itemCount = recycler_view?.adapter?.itemCount ?: return null
         if (itemCount <= 0) return null
         return getProfileViewHolder(position)
     }
 
     private fun getProfileViewHolder(position: Int): BaseViewHolder? {
+        Timber.i("getProfileViewHolder")
 
 
         val view = (recycler_view?.layoutManager)?.findViewByPosition(position) ?: return null
@@ -200,12 +245,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showKeyboard(delay: Long = 0L) {
+        Timber.i("showKeyboard")
         Handler().postDelayed({
             showKeyboardNow()
         }, delay)
     }
 
     private fun showKeyboardNow() {
+        Timber.i("showKeyboardNow")
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
         val windowToken = currentFocus?.windowToken ?: return
         inputManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
