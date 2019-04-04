@@ -34,7 +34,7 @@ object Blur {
 
         try {
             val bitmap = drawViewToBitmap(width, height, view, Color.parseColor("#ffffffff"))
-            val blurredBitmap = fastBlur(activity.baseContext, fastBlur(activity.baseContext, bitmap, 25f), 25f)
+            val blurredBitmap = fastBlur(activity.baseContext, bitmap, 25f)
             bitmap.recycle()
             saveBitmapToFile(activity, blurredBitmap)
             blurredBitmap.recycle()

@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTE
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.TOP
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.BOTTOM
 import androidx.lifecycle.Lifecycle
 import co.hinge.motionrecycle.Blur.blurScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -65,28 +66,43 @@ class MainActivity : AppCompatActivity() {
 
         like_blur?.setImageDrawable(Blur.loadLatest(this))
 
-        val margin = resources.getDimensionPixelSize(R.dimen.liked_content_horizontal_margin)
-        val placeholderTop = motion_header.height + viewHolder.itemView.top + margin
-        val placeholderHeight = if (placeholderTop < 0) {
-            viewHolder.itemView.height + placeholderTop
-        } else {
-            WRAP_CONTENT
-        }
+        val startMargin = resources.getDimensionPixelSize(R.dimen.profile_horizontal_margin)
+        val topOffset = viewHolder.itemView.top
+        val height = viewHolder.itemView.height
+        val placeholderTop = motion_header.height + topOffset + startMargin
+        val placeholderBottom = recycler_view.height - (height + topOffset)
 
         val placeholderId = R.id.motion_liked_content
         val parentId = R.id.motion_scene
 
         motion_header?.setTransition(R.id.expanded, R.id.hidden)
 
-        motion_scene.getConstraintSet(R.id.profileExpanded)?.apply {
-            constrainWidth(placeholderId, MATCH_PARENT)
-            constrainHeight(placeholderId, placeholderHeight)
-            connect(placeholderId, TOP, parentId, TOP, placeholderTop)
-            connect(placeholderId, START, parentId, START, margin)
-            connect(placeholderId, END, parentId, END, margin)
-        }
-
         motion_scene?.apply {
+
+            getConstraintSet(R.id.profileExpanded)?.apply {
+                constrainWidth(placeholderId, MATCH_PARENT)
+                constrainHeight(placeholderId, WRAP_CONTENT)
+                if (topOffset > 0) {
+                    connect(placeholderId, TOP, parentId, TOP, placeholderTop)
+                    clear(placeholderId, BOTTOM)
+                } else {
+                    connect(placeholderId, BOTTOM, parentId, BOTTOM, placeholderBottom)
+                    clear(placeholderId, TOP)
+                }
+                connect(placeholderId, START, parentId, START, startMargin)
+                connect(placeholderId, END, parentId, END, startMargin)
+            }
+
+//            getConstraintSet(R.id.likedContent)?.apply {
+//                constrainWidth(placeholderId, MATCH_PARENT)
+//                constrainHeight(placeholderId, WRAP_CONTENT)
+//                setVerticalBias(placeholderId, 0.45f)
+//                connect(placeholderId, TOP, parentId, TOP, 0)
+//                connect(placeholderId, START, parentId, START, endMargin)
+//                connect(placeholderId, END, parentId, END, endMargin)
+//                connect(placeholderId, BOTTOM, parentId, BOTTOM, 0)
+//            }
+
             stopListening()
             setTransition(R.id.profileExpanded, R.id.likedContent)
             transitionToEnd()

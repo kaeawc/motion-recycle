@@ -25,6 +25,7 @@
 
         <KeyFrameSet>
             <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="0" android:alpha="1" />
+            <KeyAttribute motion:target="@id/like_blur" motion:framePosition="0" android:alpha="1" />
         </KeyFrameSet>
 
     </Transition>
@@ -38,6 +39,7 @@
         >
 
         <KeyFrameSet>
+            <KeyAttribute motion:target="@id/motion_header" motion:framePosition="0" android:alpha="1" />
             <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="100" android:alpha="1" />
             <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" android:translationY="64dp" />
             <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" />
