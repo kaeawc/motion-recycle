@@ -24,6 +24,7 @@
         >
 
         <KeyFrameSet>
+            <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="50" android:alpha="0" />
             <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="0" android:alpha="1" />
             <KeyAttribute motion:target="@id/like_blur" motion:framePosition="0" android:alpha="1" />
         </KeyFrameSet>
@@ -41,7 +42,7 @@
         <KeyFrameSet>
             <KeyAttribute motion:target="@id/motion_header" motion:framePosition="0" android:alpha="1" />
             <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="100" android:alpha="1" />
-            <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" android:translationY="64dp" />
+            <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="50" android:alpha="0" android:translationY="64dp" />
             <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" />
             <KeyAttribute motion:target="@id/cancel_button" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" />
 
@@ -66,19 +67,19 @@
     />
 
     <Transition
-            android:id="@+id/addCommentToShortContent"
-            motion:constraintSetStart="@id/likedContentShort"
-            motion:constraintSetEnd="@id/writingCommentForShortContent"
-            motion:duration="400"
-            motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        android:id="@+id/addCommentToShortContent"
+        motion:constraintSetStart="@id/likedContentShort"
+        motion:constraintSetEnd="@id/writingCommentForShortContent"
+        motion:duration="400"
+        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
     />
 
     <Transition
-            android:id="@+id/doneAddingCommentToShortContent"
-            motion:constraintSetStart="@id/finishingCommentForShortContent"
-            motion:constraintSetEnd="@id/likedContent"
-            motion:duration="400"
-            motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        android:id="@+id/doneAddingCommentToShortContent"
+        motion:constraintSetStart="@id/finishingCommentForShortContent"
+        motion:constraintSetEnd="@id/likedContent"
+        motion:duration="400"
+        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
     />
 
     <ConstraintSet android:id="@+id/profileExpanded">
@@ -137,11 +138,13 @@
             android:id="@id/comment_bubble"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            motion:layout_constraintBottom_toBottomOf="@id/motion_liked_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
+            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintVertical_bias="0.5"
             android:alpha="0"
             />
         <Constraint
@@ -251,11 +254,13 @@
             android:id="@id/comment_bubble"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            motion:layout_constraintBottom_toBottomOf="@id/motion_liked_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
+            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintVertical_bias="0.5"
             android:alpha="0"
             />
         <Constraint

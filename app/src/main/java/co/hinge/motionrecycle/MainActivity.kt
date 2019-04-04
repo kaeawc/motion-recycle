@@ -21,14 +21,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.photo_item.*
 import kotlinx.android.synthetic.main.prompt_item.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
     var currentLikedContent = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.i("onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recycler_view?.adapter = ProfileAdapter()
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        Timber.i("onResume")
         super.onResume()
 
         val adapter = (recycler_view?.adapter as? ProfileAdapter) ?: return
@@ -80,13 +77,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onContentClicked(position: Int) {
-        Timber.i("onContentClicked")
         setupLikedContentTransition(position)
         likedContentState(position)
     }
 
     private fun setupLikedContentTransition(position: Int) {
-        Timber.i("setupLikedContentTransition")
 
         val viewHolder = getViewHolderAt(position) ?: return
         val view = getLikedContentViewAt(viewHolder) ?: return
@@ -134,7 +129,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onKeyboardViewState(viewState: KeyboardViewState) {
-        Timber.i("onKeyboardViewState ${viewState.visible}")
 
         if (motion_scene?.currentState !in setOf(
                 R.id.likedContent,
@@ -173,7 +167,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun likedContentState(position: Int) {
-        Timber.i("likedContentState")
 
         motion_liked_content?.setBackgroundResource(R.drawable.liked_content_bubble)
 
@@ -193,7 +186,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupCommentComposition() {
-        Timber.i("setupCommentComposition")
 
         comment_composition_view?.isFocusableInTouchMode = true
         comment_composition_view?.isFocusable = true
@@ -206,7 +198,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getLikedContentViewAt(viewHolder: BaseViewHolder): View? {
-        Timber.i("getLikedContentViewAt")
         return when (viewHolder) {
             is PhotoViewHolder -> viewHolder.photo_view
             else -> viewHolder.prompt_bubble
@@ -214,7 +205,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun applyViewToLikedContentPlaceholder(view: View) {
-        Timber.i("applyViewToLikedContentPlaceholder")
         view.apply {
             isDrawingCacheEnabled = true
 
@@ -237,7 +227,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun returnToProfile(position: Int) {
-        Timber.i("returnToProfile")
 
         currentLikedContent = -1
 
@@ -246,7 +235,7 @@ class MainActivity : AppCompatActivity() {
             like_blur?.setOnTouchListener { v, event ->
                 false
             }
-            
+
             val viewHolder = getViewHolderAt(position) ?: return@after
             getLikedContentViewAt(viewHolder)?.alpha = 1f
         }
@@ -259,14 +248,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getViewHolderAt(position: Int): BaseViewHolder? {
-        Timber.i("getViewHolderAt")
         val itemCount = recycler_view?.adapter?.itemCount ?: return null
         if (itemCount <= 0) return null
         return getProfileViewHolder(position)
     }
 
     private fun getProfileViewHolder(position: Int): BaseViewHolder? {
-        Timber.i("getProfileViewHolder")
 
 
         val view = (recycler_view?.layoutManager)?.findViewByPosition(position) ?: return null
@@ -282,21 +269,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showKeyboard(delay: Long = 0L) {
-        Timber.i("showKeyboard")
         Handler().postDelayed({
             showKeyboardNow()
         }, delay)
     }
 
     private fun showKeyboardNow() {
-        Timber.i("showKeyboardNow")
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
         val windowToken = currentFocus?.windowToken ?: return
         inputManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
     }
 
     private fun hideKeyboardNow() {
-        Timber.i("hideKeyboardNow")
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager? ?: return
         val windowToken = currentFocus?.windowToken ?: return
         inputManager.hideSoftInputFromWindow(windowToken, 0)

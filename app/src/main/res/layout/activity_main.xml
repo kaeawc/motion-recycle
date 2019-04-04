@@ -35,6 +35,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <TextView
+        android:id="@+id/comment_bubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/send_like_comment_bubble"
+        android:text="@string/add_a_comment"
+        android:paddingTop="18dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="18dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/motion_liked_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <ImageView
         android:id="@id/motion_liked_content"
         android:layout_width="0dp"
@@ -47,25 +66,6 @@
         />
 
     <include layout="@layout/header" />
-
-    <TextView
-        android:id="@+id/comment_bubble"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/send_like_comment_bubble"
-        android:text="@string/add_a_comment"
-        android:paddingTop="18dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="18dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:textColor="@color/gray"
-        app:layout_constraintTop_toBottomOf="@id/motion_liked_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
     <TextView
         android:id="@+id/liked_subject_name"
