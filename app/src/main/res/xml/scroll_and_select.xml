@@ -25,6 +25,8 @@
 
         <KeyFrameSet>
             <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="50" android:alpha="0" />
+            <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="50" android:alpha="0" />
+            <KeyAttribute motion:target="@id/cancel_button" motion:framePosition="50" android:alpha="0" />
             <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="0" android:alpha="1" />
             <KeyAttribute motion:target="@id/like_blur" motion:framePosition="0" android:alpha="1" />
         </KeyFrameSet>
@@ -43,7 +45,7 @@
             <KeyAttribute motion:target="@id/motion_header" motion:framePosition="0" android:alpha="1" />
             <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="100" android:alpha="1" />
             <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="50" android:alpha="0" android:translationY="64dp" />
-            <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" />
+            <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="50" android:alpha="0" android:scaleX="1" android:scaleY="1" />
             <KeyAttribute motion:target="@id/cancel_button" motion:framePosition="100" android:alpha="0" android:scaleX="1" android:scaleY="1" />
 
         </KeyFrameSet>
@@ -151,12 +153,12 @@
             android:id="@id/send_like_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:scaleY="0.5"
             android:scaleX="0.5"
-            motion:layout_constraintTop_toBottomOf="@id/motion_liked_content"
+            motion:layout_constraintTop_toBottomOf="@id/comment_bubble"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:alpha="-1"
@@ -267,12 +269,12 @@
             android:id="@id/send_like_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:scaleY="0.5"
             android:scaleX="0.5"
-            motion:layout_constraintTop_toBottomOf="@id/motion_liked_content"
+            motion:layout_constraintTop_toBottomOf="@id/comment_bubble"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:alpha="-1"
