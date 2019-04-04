@@ -11,14 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.BOTTOM
 import androidx.lifecycle.Lifecycle
-import co.hinge.motionrecycle.Blur.blurScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.photo_item.*
 import kotlinx.android.synthetic.main.prompt_item.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,9 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         view.alpha = 0f
 
-        Blur.blurScreen(this, motion_scene)
-
-        like_blur?.setImageDrawable(Blur.loadLatest(this))
+        like_blur?.setImageDrawable(Blur.blurScreen(this, motion_scene))
 
         val startMargin = resources.getDimensionPixelSize(R.dimen.profile_horizontal_margin)
         val topOffset = viewHolder.itemView.top
@@ -92,16 +88,6 @@ class MainActivity : AppCompatActivity() {
                 connect(placeholderId, START, parentId, START, startMargin)
                 connect(placeholderId, END, parentId, END, startMargin)
             }
-
-//            getConstraintSet(R.id.likedContent)?.apply {
-//                constrainWidth(placeholderId, MATCH_PARENT)
-//                constrainHeight(placeholderId, WRAP_CONTENT)
-//                setVerticalBias(placeholderId, 0.45f)
-//                connect(placeholderId, TOP, parentId, TOP, 0)
-//                connect(placeholderId, START, parentId, START, endMargin)
-//                connect(placeholderId, END, parentId, END, endMargin)
-//                connect(placeholderId, BOTTOM, parentId, BOTTOM, 0)
-//            }
 
             stopListening()
             setTransition(R.id.profileExpanded, R.id.likedContent)
