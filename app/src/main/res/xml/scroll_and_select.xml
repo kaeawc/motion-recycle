@@ -50,16 +50,32 @@
     </Transition>
 
     <Transition
-        android:id="@+id/addCommentToLike"
+        android:id="@+id/addCommentToTallContent"
         motion:constraintSetStart="@id/likedContent"
-        motion:constraintSetEnd="@id/writingCommentForLike"
+        motion:constraintSetEnd="@id/writingCommentForTallContent"
         motion:duration="400"
         motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
-            android:id="@+id/doneAddingCommentToLike"
-            motion:constraintSetStart="@id/writingCommentForLike"
+        android:id="@+id/doneAddingCommentToTallContent"
+        motion:constraintSetStart="@id/writingCommentForTallContent"
+        motion:constraintSetEnd="@id/likedContent"
+        motion:duration="400"
+        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+    />
+
+    <Transition
+            android:id="@+id/addCommentToShortContent"
+            motion:constraintSetStart="@id/likedContent"
+            motion:constraintSetEnd="@id/writingCommentForShortContent"
+            motion:duration="400"
+            motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+    />
+
+    <Transition
+            android:id="@+id/doneAddingCommentToShortContent"
+            motion:constraintSetStart="@id/writingCommentForShortContent"
             motion:constraintSetEnd="@id/likedContent"
             motion:duration="400"
             motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
@@ -409,7 +425,7 @@
             android:translationY="200dp"
             />
     </ConstraintSet>
-    <ConstraintSet android:id="@+id/writingCommentForLike">
+    <ConstraintSet android:id="@+id/writingCommentForTallContent">
         <Constraint
             android:id="@id/motion_header"
             android:layout_width="0dp"
@@ -439,6 +455,123 @@
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
+            android:alpha="1"
+            />
+        <Constraint
+            android:id="@id/like_blur"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:alpha="1"
+            />
+        <Constraint
+            android:id="@id/liked_subject_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="8dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toTopOf="@id/motion_liked_content"
+            android:alpha="0"
+            />
+        <Constraint
+            android:id="@id/comment_bubble"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            motion:layout_constraintTop_toBottomOf="@id/motion_liked_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:alpha="0"
+            />
+        <Constraint
+            android:id="@id/send_like_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:scaleY="1"
+            android:scaleX="1"
+            motion:layout_constraintTop_toBottomOf="@id/motion_liked_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:alpha="0"
+            />
+        <Constraint
+            android:id="@id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:scaleY="1"
+            android:scaleX="1"
+            motion:layout_constraintTop_toBottomOf="@id/send_like_button"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:alpha="0"
+            />
+        <Constraint
+            android:id="@+id/comment_composition_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toStartOf="@id/comment_done_button"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:translationY="0dp"
+            />
+        <Constraint
+            android:id="@+id/comment_done_button"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="@id/comment_composition_view"
+            motion:layout_constraintStart_toEndOf="@id/comment_composition_view"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:translationY="0dp"
+            />
+</ConstraintSet>
+    <ConstraintSet android:id="@+id/writingCommentForShortContent">
+        <Constraint
+            android:id="@id/motion_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:progress="1"
+            android:alpha="-1"
+            />
+        <Constraint
+            android:id="@id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toBottomOf="@id/motion_header"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            />
+        <Constraint
+            android:id="@id/motion_liked_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="8dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toTopOf="@id/comment_composition_view"
+            motion:layout_constraintVertical_bias="1"
             android:alpha="1"
             />
         <Constraint
