@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity() {
 
         comment_bubble?.setOnClickListener {
             comment_composition_view?.requestFocus()
-            showKeyboard(delay = 100)
+            showKeyboardNow()
         }
     }
 
