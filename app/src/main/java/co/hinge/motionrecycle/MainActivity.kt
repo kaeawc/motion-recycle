@@ -102,11 +102,15 @@ class MainActivity : AppCompatActivity() {
         val placeholderId = R.id.motion_liked_content
         val parentId = R.id.motion_scene
 
-        motion_header?.setTransition(R.id.expanded, R.id.hidden)
+        val profileStartState = when (position) {
+            0 -> R.id.profileExpanded
+            else -> R.id.profileCollapsed
+        }
+
 
         motion_scene?.apply {
 
-            getConstraintSet(R.id.profileExpanded)?.apply {
+            getConstraintSet(profileStartState)?.apply {
                 constrainWidth(placeholderId, MATCH_PARENT)
                 constrainHeight(placeholderId, WRAP_CONTENT)
                 if (topOffset > 0) {
@@ -121,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             stopListening()
-            setTransition(R.id.profileExpanded, R.id.likedContent)
+            setTransition(profileStartState, R.id.likedContent)
             transitionToEnd()
         }
     }
@@ -233,6 +237,16 @@ class MainActivity : AppCompatActivity() {
         currentLikedContent = -1
 
         motion_scene?.after {
+            motion_scene?.stopListening()
+
+            motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
+
+            motion_header?.postDelayed({
+                motion_header?.progress = if (position > 0) 1f else 0f
+            }, 100)
+//            motion_header?.progress = 0.5f
+//            motion_header?.progress = motion_scene?.progress ?: 0f
+//            motion_scene?.rebuildMotion()
 
             like_blur?.setOnTouchListener { v, event ->
                 false
@@ -241,7 +255,14 @@ class MainActivity : AppCompatActivity() {
             val viewHolder = getViewHolderAt(position) ?: return@after
             getLikedContentViewAt(viewHolder)?.alpha = 1f
         }
-        motion_scene?.setTransition(R.id.likedContent, R.id.profileExpanded)
+
+
+        val profileEndState = when (position) {
+            0 -> R.id.profileExpanded
+            else -> R.id.profileCollapsed
+        }
+
+        motion_scene?.setTransition(R.id.likedContent, profileEndState)
         motion_scene?.transitionToEnd()
 
         cancel_button?.setOnClickListener(null)
