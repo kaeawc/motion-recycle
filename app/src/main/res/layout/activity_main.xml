@@ -1,150 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/motion_scene"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layoutDescription="@xml/scroll_and_select"
-    tools:context="co.hinge.motionrecycle.MainActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        tools:listitem="@layout/photo_item"
-        app:layoutManager="co.hinge.motionrecycle.FastLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/motion_header"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/like_blur"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:importantForAccessibility="no"
-        android:scaleType="matrix"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        tools:context="co.hinge.motionrecycle.MainActivity">
 
-    <TextView
-        android:id="@+id/comment_bubble"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/send_like_comment_bubble"
-        android:text="@string/add_a_comment"
-        android:paddingTop="18dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="18dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/gray"
-        app:layout_constraintTop_toBottomOf="@id/motion_liked_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <TextView
-            android:id="@+id/liked_subject_name"
+    <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/profile_scene_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/danielle"
-            android:textSize="30sp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/motion_liked_content"
-    />
-
-    <TextView
-            android:id="@+id/send_like_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/send_like_button"
-            android:text="Send Like"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/comment_bubble"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-    />
-
-    <TextView
-            android:id="@+id/cancel_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:textColor="@color/grayDark"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/send_like_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-    />
-
-    <ImageView
-        android:id="@id/motion_liked_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/liked_content_bubble"
-        android:importantForAccessibility="no"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <include layout="@layout/header" />
-
-    <EditText
-            android:id="@+id/comment_composition_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:paddingTop="18dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="18dp"
-            android:hint="Add a comment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/comment_done_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-    />
-
-    <TextView
-            android:id="@+id/comment_done_button"
-            android:layout_width="80dp"
             android:layout_height="0dp"
-            android:background="@color/white"
-            android:text="Done"
-            android:textColor="@color/indigo"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="@id/comment_composition_view"
-            app:layout_constraintStart_toEndOf="@id/comment_composition_view"
+            app:layoutDescription="@xml/scroll_scene"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                tools:listitem="@layout/photo_item"
+                app:layoutManager="co.hinge.motionrecycle.FastLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/motion_header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+        <include layout="@layout/header" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/liking_scene_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutDescription="@xml/liking_scene"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-    />
+    >
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+        <ImageView
+                android:id="@+id/like_blur"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:importantForAccessibility="no"
+                android:scaleType="matrix"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+        <TextView
+                android:id="@+id/comment_bubble"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/send_like_comment_bubble"
+                android:text="@string/add_a_comment"
+                android:paddingTop="18dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="18dp"
+                android:layout_marginStart="72dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/gray"
+                app:layout_constraintTop_toBottomOf="@id/motion_liked_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <TextView
+                android:id="@+id/liked_subject_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/danielle"
+                android:textSize="30sp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/motion_liked_content"
+        />
+
+        <TextView
+                android:id="@+id/send_like_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/send_like_button"
+                android:text="Send Like"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/comment_bubble"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <TextView
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:textColor="@color/grayDark"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/send_like_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <ImageView
+                android:id="@id/motion_liked_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/liked_content_bubble"
+                android:importantForAccessibility="no"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+
+        <EditText
+                android:id="@+id/comment_composition_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingTop="18dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="18dp"
+                android:hint="Add a comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/comment_done_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+        <TextView
+                android:id="@+id/comment_done_button"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:text="Done"
+                android:textColor="@color/indigo"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="@id/comment_composition_view"
+                app:layout_constraintStart_toEndOf="@id/comment_composition_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

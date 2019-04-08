@@ -5,7 +5,7 @@
     android:id="@+id/motion_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layoutDescription="@xml/resize_header"
+    app:layoutDescription="@xml/header_scene"
     android:background="@color/white">
 
     <Space

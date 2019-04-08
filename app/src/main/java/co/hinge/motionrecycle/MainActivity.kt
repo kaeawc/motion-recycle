@@ -57,12 +57,13 @@ class MainActivity : AppCompatActivity() {
             .subscribe()
             .disposeOn(this, Lifecycle.Event.ON_DESTROY)
 
-        motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
+        profile_scene_view?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
+        liking_scene_view?.transitionToState(R.id.showProfile)
     }
 
     override fun onBackPressed() {
-        when (motion_scene?.currentState) {
-            -1 -> motion_scene?.transitionToEnd()
+        when (liking_scene_view?.currentState) {
+            -1 -> liking_scene_view?.transitionToEnd()
             R.id.likedContent -> returnToProfile(currentLikedContent)
             R.id.writingCommentForTallContent -> {
                 hideKeyboardNow()
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         view.alpha = 0f
 
-        like_blur?.setImageDrawable(Blur.blurScreen(this, motion_scene))
+        like_blur?.setImageDrawable(Blur.blurScreen(this, profile_scene_view))
 
         val startMargin = resources.getDimensionPixelSize(R.dimen.profile_horizontal_margin)
         val topOffset = viewHolder.itemView.top
@@ -100,17 +101,11 @@ class MainActivity : AppCompatActivity() {
         val placeholderBottom = recycler_view.height - (height + topOffset)
 
         val placeholderId = R.id.motion_liked_content
-        val parentId = R.id.motion_scene
+        val parentId = R.id.liking_scene_view
 
-        val profileStartState = when (position) {
-            0 -> R.id.profileExpanded
-            else -> R.id.profileCollapsed
-        }
+        liking_scene_view?.apply {
 
-
-        motion_scene?.apply {
-
-            getConstraintSet(profileStartState)?.apply {
+            getConstraintSet(R.id.showProfile)?.apply {
                 constrainWidth(placeholderId, MATCH_PARENT)
                 constrainHeight(placeholderId, WRAP_CONTENT)
                 if (topOffset > 0) {
@@ -125,19 +120,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             stopListening()
-            setTransition(profileStartState, R.id.likedContent)
+            setTransition(R.id.showProfile, R.id.likedContent)
             transitionToEnd()
         }
     }
 
     private fun onKeyboardViewState(viewState: KeyboardViewState) {
 
-        if (motion_scene?.currentState !in setOf(
+        if (liking_scene_view?.currentState !in setOf(
                 R.id.likedContent,
                 R.id.writingCommentForTallContent,
                 R.id.writingCommentForShortContent)) return
 
-        motion_scene?.apply {
+        liking_scene_view?.apply {
 
             val tall = motion_liked_content?.run { height > width } ?: false
             val commentState = when (tall) {
@@ -236,34 +231,17 @@ class MainActivity : AppCompatActivity() {
 
         currentLikedContent = -1
 
-        motion_scene?.after {
-            motion_scene?.stopListening()
-
-            motion_scene?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
-
-            motion_header?.postDelayed({
-                motion_header?.progress = if (position > 0) 1f else 0f
-            }, 100)
-//            motion_header?.progress = 0.5f
-//            motion_header?.progress = motion_scene?.progress ?: 0f
-//            motion_scene?.rebuildMotion()
-
+        liking_scene_view?.after {
+            liking_scene_view?.stopListening()
             like_blur?.setOnTouchListener { v, event ->
                 false
             }
-
             val viewHolder = getViewHolderAt(position) ?: return@after
             getLikedContentViewAt(viewHolder)?.alpha = 1f
         }
 
-
-        val profileEndState = when (position) {
-            0 -> R.id.profileExpanded
-            else -> R.id.profileCollapsed
-        }
-
-        motion_scene?.setTransition(R.id.likedContent, profileEndState)
-        motion_scene?.transitionToEnd()
+        liking_scene_view?.setTransition(R.id.likedContent, R.id.showProfile)
+        liking_scene_view?.transitionToEnd()
 
         cancel_button?.setOnClickListener(null)
         comment_bubble?.setOnClickListener(null)
