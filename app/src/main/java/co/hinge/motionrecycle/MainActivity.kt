@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.TOP
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.BOTTOM
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import arrow.core.Success
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.prompt_item.*
 class MainActivity : AppCompatActivity() {
 
     var currentLikedContent = -1
+    var needToWarnOnBackPress = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +67,15 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         when (liking_scene_view?.currentState) {
             -1 -> liking_scene_view?.transitionToEnd()
-            R.id.likedContent -> returnToProfile(currentLikedContent)
-            R.id.writingCommentForTallContent -> {
-                hideKeyboardNow()
+            R.id.likedContent -> {
+                val writtenComment = comment_bubble?.text?.toString() ?: ""
+                if (writtenComment.isNotBlank() && writtenComment != getString(R.string.add_a_comment) && needToWarnOnBackPress) {
+                    showCommentDeleteWarning()
+                } else {
+                    returnToProfile(currentLikedContent)
+                }
             }
+            R.id.writingCommentForTallContent,
             R.id.writingCommentForShortContent -> {
                 hideKeyboardNow()
             }
@@ -147,6 +155,7 @@ class MainActivity : AppCompatActivity() {
                     transitionToEnd()
                 }
                 tall -> {
+
                     setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
                     transitionToEnd()
                     likedContentState(currentLikedContent)
@@ -155,6 +164,17 @@ class MainActivity : AppCompatActivity() {
                     setTransition(R.id.finishingCommentForShortContent, R.id.likedContent)
                     transitionToEnd()
                     likedContentState(currentLikedContent)
+                }
+            }
+
+            if (!viewState.visible) {
+                val writtenComment = comment_composition_view?.text?.toString() ?: ""
+                if (writtenComment.isBlank()) {
+                    comment_bubble?.text = getString(R.string.add_a_comment)
+                    comment_bubble?.setTextColor(ContextCompat.getColor(baseContext, R.color.gray))
+                } else {
+                    comment_bubble?.text = writtenComment
+                    comment_bubble?.setTextColor(ContextCompat.getColor(baseContext, R.color.black))
                 }
             }
 
@@ -229,6 +249,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun returnToProfile(position: Int) {
 
+        needToWarnOnBackPress = true
+        comment_bubble?.text = getString(R.string.add_a_comment)
+        comment_composition_view?.text?.clear()
         currentLikedContent = -1
 
         liking_scene_view?.after {
@@ -267,6 +290,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         return viewHolder as? BaseViewHolder
+    }
+
+    private fun showCommentDeleteWarning() {
+        needToWarnOnBackPress = false
+        Toast.makeText(
+            baseContext,
+            "Exiting will delete the comment you've written",
+            Toast.LENGTH_LONG).show()
     }
 
     private fun showKeyboard(delay: Long = 0L) {
