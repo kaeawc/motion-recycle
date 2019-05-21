@@ -1,6 +1,7 @@
 package co.hinge.motionrecycle
 
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.MotionScene
 
 fun MotionLayout.after(completion: () -> Unit) {
     this.setTransitionListener(object: MotionLayout.TransitionListener {
@@ -10,6 +11,7 @@ fun MotionLayout.after(completion: () -> Unit) {
         override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
             completion()
         }
+        override fun allowsTransition(p0: MotionScene.Transition?): Boolean = true
     })
 }
 

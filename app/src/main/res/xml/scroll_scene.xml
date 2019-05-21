@@ -20,15 +20,15 @@
         motion:constraintSetStart="@id/profileExpanded"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
-        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         >
 
         <KeyFrameSet>
-            <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="50" android:alpha="0" />
-            <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="50" android:alpha="0" />
-            <KeyAttribute motion:target="@id/cancel_button" motion:framePosition="50" android:alpha="0" />
-            <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="0" android:alpha="1" />
-            <KeyAttribute motion:target="@id/like_blur" motion:framePosition="0" android:alpha="1" />
+            <KeyAttribute motion:motionTarget="@id/comment_bubble" motion:framePosition="50" android:alpha="0" />
+            <KeyAttribute motion:motionTarget="@id/send_like_button" motion:framePosition="50" android:alpha="0" />
+            <KeyAttribute motion:motionTarget="@id/cancel_button" motion:framePosition="50" android:alpha="0" />
+            <KeyAttribute motion:motionTarget="@id/motion_liked_content" motion:framePosition="0" android:alpha="1" />
+            <KeyAttribute motion:motionTarget="@id/like_blur" motion:framePosition="0" android:alpha="1" />
         </KeyFrameSet>
 
     </Transition>
@@ -38,15 +38,15 @@
         motion:constraintSetStart="@id/likedContent"
         motion:constraintSetEnd="@id/profileExpanded"
         motion:duration="400"
-        motion:interpolator="cubic(0.0,0.3,0.2,1.0)"
+        motion:motionInterpolator="cubic(0.0,0.3,0.2,1.0)"
         >
 
         <KeyFrameSet>
-            <KeyAttribute motion:target="@id/motion_header" motion:framePosition="0" android:alpha="1" />
-            <KeyAttribute motion:target="@id/motion_liked_content" motion:framePosition="100" android:alpha="1" />
-            <KeyAttribute motion:target="@id/comment_bubble" motion:framePosition="50" android:alpha="0" android:translationY="64dp" />
-            <KeyAttribute motion:target="@id/send_like_button" motion:framePosition="50" android:alpha="0" android:scaleX="1" android:scaleY="1" />
-            <KeyAttribute motion:target="@id/cancel_button" motion:framePosition="50" android:alpha="0" android:scaleX="1" android:scaleY="1" />
+            <KeyAttribute motion:motionTarget="@id/motion_header" motion:framePosition="0" android:alpha="1" />
+            <KeyAttribute motion:motionTarget="@id/motion_liked_content" motion:framePosition="100" android:alpha="1" />
+            <KeyAttribute motion:motionTarget="@id/comment_bubble" motion:framePosition="50" android:alpha="0" android:translationY="64dp" />
+            <KeyAttribute motion:motionTarget="@id/send_like_button" motion:framePosition="50" android:alpha="0" android:scaleX="1" android:scaleY="1" />
+            <KeyAttribute motion:motionTarget="@id/cancel_button" motion:framePosition="50" android:alpha="0" android:scaleX="1" android:scaleY="1" />
 
         </KeyFrameSet>
 
@@ -57,7 +57,7 @@
         motion:constraintSetStart="@id/likedContent"
         motion:constraintSetEnd="@id/writingCommentForTallContent"
         motion:duration="400"
-        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
@@ -65,7 +65,7 @@
         motion:constraintSetStart="@id/writingCommentForTallContent"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
-        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
@@ -73,7 +73,7 @@
         motion:constraintSetStart="@id/likedContentShort"
         motion:constraintSetEnd="@id/writingCommentForShortContent"
         motion:duration="400"
-        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
@@ -81,18 +81,19 @@
         motion:constraintSetStart="@id/finishingCommentForShortContent"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
-        motion:interpolator="cubic(0.0,0.7,0.2,1.0)"
+        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <ConstraintSet android:id="@+id/profileExpanded">
         <Constraint
             android:id="@id/motion_header"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="104dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:progress="0" />
+            motion:layout_constraintEnd_toEndOf="parent">
+            <PropertySet motion:motionProgress="0" />
+        </Constraint>
         <Constraint
             android:id="@id/recycler_view"
             android:layout_width="0dp"
@@ -111,8 +112,9 @@
             android:layout_height="56dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:progress="1" />
+            motion:layout_constraintEnd_toEndOf="parent">
+            <PropertySet motion:motionProgress="1" />
+        </Constraint>
         <Constraint
             android:id="@id/recycler_view"
             android:layout_width="0dp"

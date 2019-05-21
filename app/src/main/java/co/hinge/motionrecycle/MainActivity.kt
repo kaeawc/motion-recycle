@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.START
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.END
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.BOTTOM
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import arrow.core.Success
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             .disposeOn(this, Lifecycle.Event.ON_DESTROY)
 
         profile_scene_view?.setTransition(R.id.profileExpanded, R.id.profileCollapsed)
-        liking_scene_view?.transitionToState(R.id.showProfile)
+        // TODO liking_scene_view?.transitionToState(R.id.showProfile)
     }
 
     override fun onBackPressed() {
@@ -113,22 +114,28 @@ class MainActivity : AppCompatActivity() {
 
         liking_scene_view?.apply {
 
-            getConstraintSet(R.id.showProfile)?.apply {
-                constrainWidth(placeholderId, MATCH_PARENT)
-                constrainHeight(placeholderId, WRAP_CONTENT)
-                if (topOffset > 0) {
-                    connect(placeholderId, TOP, parentId, TOP, placeholderTop)
-                    clear(placeholderId, BOTTOM)
-                } else {
-                    connect(placeholderId, BOTTOM, parentId, BOTTOM, placeholderBottom)
-                    clear(placeholderId, TOP)
-                }
-                connect(placeholderId, START, parentId, START, startMargin)
-                connect(placeholderId, END, parentId, END, startMargin)
-            }
-
             stopListening()
+
+            val cs = getConstraintSet(R.id.showProfile)
+
+            cs?.constrainWidth(placeholderId, MATCH_PARENT)
+            cs?.constrainHeight(placeholderId, WRAP_CONTENT)
+            if (topOffset > 0) {
+                cs?.setMargin(placeholderId, TOP, placeholderTop)
+                cs?.setMargin(placeholderId, BOTTOM, 0)
+                cs?.setVerticalBias(placeholderId, 0f)
+            } else {
+                cs?.setMargin(placeholderId, BOTTOM, placeholderBottom)
+                cs?.setMargin(placeholderId, TOP, 0)
+                cs?.setVerticalBias(placeholderId, 1f)
+            }
+            cs?.connect(placeholderId, START, parentId, START, startMargin)
+            cs?.connect(placeholderId, END, parentId, END, startMargin)
+
+            updateState(R.id.showProfile, cs)
+
             setTransition(R.id.showProfile, R.id.likedContent)
+            motion_liked_content?.isVisible = true
             transitionToEnd()
         }
     }
@@ -261,6 +268,7 @@ class MainActivity : AppCompatActivity() {
             }
             val viewHolder = getViewHolderAt(position) ?: return@after
             getLikedContentViewAt(viewHolder)?.alpha = 1f
+            motion_liked_content?.isVisible = false
         }
 
         liking_scene_view?.setTransition(R.id.likedContent, R.id.showProfile)
