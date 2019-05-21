@@ -8,21 +8,13 @@
     app:layoutDescription="@xml/header_scene"
     android:background="@color/white">
 
-    <Space
-        android:id="@+id/header_spacer"
-        android:layout_width="0dp"
-        android:layout_height="104dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
     <TextView
         android:id="@+id/profile_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/danielle"
         android:textSize="30sp"
+        android:textStyle="bold"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
