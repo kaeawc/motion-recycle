@@ -8,8 +8,7 @@
         motion:constraintSetStart="@id/showProfile"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
-        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
-        >
+        motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)">
 
         <KeyFrameSet>
             <KeyAttribute motion:motionTarget="@id/comment_bubble" motion:framePosition="50" android:alpha="0" />
