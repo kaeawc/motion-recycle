@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="duration"/>
+    <attr name="flow_horizontalSeparator"/>
+    <attr name="flow_verticalSeparator"/>
+    <attr name="motionPathRotate"/>
+    <attr name="motionProgress"/>
+    <attr name="waveDecay"/>
+</resources>

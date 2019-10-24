@@ -76,8 +76,7 @@ class MainActivity : AppCompatActivity() {
                     returnToProfile(currentLikedContent)
                 }
             }
-            R.id.writingCommentForTallContent,
-            R.id.writingCommentForShortContent -> {
+            R.id.writingComment -> {
                 hideKeyboardNow()
             }
             else -> super.onBackPressed()
@@ -144,32 +143,15 @@ class MainActivity : AppCompatActivity() {
 
         if (liking_scene_view?.currentState !in setOf(
                 R.id.likedContent,
-                R.id.writingCommentForTallContent,
-                R.id.writingCommentForShortContent)) return
+                R.id.writingComment)) return
 
         liking_scene_view?.apply {
 
-            val tall = motion_liked_content?.run { height > width } ?: false
-            val commentState = when (tall) {
-                true -> R.id.writingCommentForTallContent
-                else -> R.id.writingCommentForShortContent
-            }
-
             stopListening()
             when {
-                viewState.visible -> {
-                    setTransition(R.id.likedContentShort, commentState)
-                    transitionToEnd()
-                }
-                tall -> {
-
-                    setTransition(R.id.writingCommentForTallContent, R.id.likedContent)
-                    transitionToEnd()
-                    likedContentState(currentLikedContent)
-                }
+                viewState.visible -> goTo(R.id.writingComment)
                 else -> {
-                    setTransition(R.id.finishingCommentForShortContent, R.id.likedContent)
-                    transitionToEnd()
+                    goTo(R.id.likedContent)
                     likedContentState(currentLikedContent)
                 }
             }

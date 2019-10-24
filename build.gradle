@@ -1,14 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.31'
+    ext.kotlin_version = '1.3.60-eap-25'
     repositories {
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-beta01'
+        classpath 'com.android.tools.build:gradle:4.0.0-alpha01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -17,6 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 
     }
 }
@@ -24,3 +26,147 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext.versions = [
+
+        buildTools: "29.0.0",
+
+        // Kotlin
+        kotlin: "1.3.60-eap-25",
+        arrow: "0.8.2",
+
+        // Chrome Custom Tabs
+        browser: "1.0.0",
+        media: "1.0.0-alpha04",
+        exifinterface: "1.0.0",
+
+        // Material
+        design: "1.0.0",
+        palette: "1.0.0",
+
+        // AndroidX UI
+        androidCore: "1.1.0-alpha04",
+        androidKtx: "1.1.0-alpha04",
+        activity: "1.0.0-alpha04",
+        fragment: "1.1.0-alpha04",
+        savedState: "1.0.0-alpha01",
+        transition: "1.1.0-alpha01",
+        constraintLayout: "2.0.0-beta1",
+        coordinatorLayout: "1.1.0-alpha01",
+        cardview: "1.0.0",
+        appCompat: "1.1.0-alpha02",
+        recyclerview: "1.1.0-alpha02",
+
+        // Navigation Component
+        navigationComponent: "2.0.0",
+
+        // Navigation
+        lifecycle: "2.0.0",
+
+        // Lottie Animation
+        lottie: "3.0.0",
+
+        // Payments
+        billing: "1.2.2",
+
+        // Async
+        rxJava: "2.2.5",
+        rxAndroid: "2.1.0",
+
+        // Network
+        okio: "1.5.0",
+        moshi: "1.5.0",
+        okhttp: "3.12.1",
+        okhttpMockWebserver: "3.12.1",
+        retrofit: "2.5.0",
+        moshiAdapter: "2.5.0",
+        retrofitMock: "2.5.0",
+        retrofitRxJavaAdapter: "2.5.0",
+        connectionclass: "1.0.1",
+
+        // Image Loading
+        glide: "4.8.0",
+        glideAnnotations: "4.8.0",
+        glideRecyclerView: "4.8.0",
+        glideOkHttp: "4.8.0",
+        glideTransformations: "4.0.1",
+
+        // Video Loading
+        exoPlayer: "2.9.2",
+        exoPlayerOkHttp: "2.9.2",
+
+        // Dependency Injection
+        dagger: "2.20",
+        daggerKapt: "2.20",
+
+        // Firebase
+        firebaseIID: "17.0.4",
+        firebaseCore: "16.0.6",
+        firebaseCommon: "16.0.4",
+        firebaseAnalytics: "16.0.6",
+        firebaseAuth: "16.1.0",
+        firebaseConfig: "16.1.3",
+        firebasePerformance: "16.2.3",
+        firebaseMessaging: "17.3.4",
+        googleLocation: "16.0.0",
+        googleAuth: "16.0.1",
+        googleMaps: "16.0.0",
+        googleBasement: "16.2.0",
+
+        // Facebook
+        facebook: "4.39.0",
+        bolts: "1.4.0",
+
+        // Chat
+        sendbird: "3.0.85",
+
+        // Marketing
+        branch: "3.0.3",
+        braze: "3.1.0",
+        installreferrer: "1.0",
+        kochava: "3.5.0",
+
+        // Memory Leak Detection
+
+        // Storage
+        room: "2.1.0-alpha04",
+        roomCompiler: "2.1.0-alpha04",
+        roomRx: "2.1.0-alpha04",
+        roomTesting: "2.1.0-alpha04",
+
+        // Debugging
+        crashlytics: "2.9.8@aar",
+        leakCanaryDebug: "1.6.2",
+        leakCanaryRelease: "1.6.2",
+        flipper: "0.14.1",
+        soloader: "0.5.1",
+        timber: "4.7.1",
+
+        // Categorization of Android devices
+        yearclass: "2.1.0",
+
+        // Battery Monitoring
+        battery: "1.0.0",
+
+        // Date parsing
+        threeTen: "1.1.1",
+
+        // Better Link Movement from Saket
+        betterLinkMovement: "2.2.0",
+
+        // Unit Tests
+        junit: "4.12",
+        mockitoForKotlin: "2.1.0",
+        mockito: "2.23.4",
+        testRunner: "1.0.2",
+        testRules: "1.0.2",
+
+        // Instrumentation Tests
+        espresso: "3.0.2",
+        espressoContrib: "3.0.2",
+        espressoIntents: "3.0.2",
+        espressoAccessibility: "3.0.2",
+        espressoWeb: "3.0.2",
+        espressoIdlingConcurrent: "3.0.2",
+        espressoIdlingResource: "3.0.2"
+]

@@ -4,7 +4,6 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        android:id="@+id/likePhoto"
         motion:constraintSetStart="@id/showProfile"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
@@ -20,7 +19,6 @@
     </Transition>
 
     <Transition
-        android:id="@+id/cancelLikingPhoto"
         motion:constraintSetStart="@id/likedContent"
         motion:constraintSetEnd="@id/showProfile"
         motion:duration="400"
@@ -36,32 +34,26 @@
     </Transition>
 
     <Transition
-        android:id="@+id/addCommentToTallContent"
         motion:constraintSetStart="@id/likedContent"
-        motion:constraintSetEnd="@id/writingCommentForTallContent"
+        motion:constraintSetEnd="@id/writingComment"
         motion:duration="400"
         motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
-        android:id="@+id/doneAddingCommentToTallContent"
-        motion:constraintSetStart="@id/writingCommentForTallContent"
+        motion:constraintSetStart="@id/writingComment"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
         motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
-        android:id="@+id/addCommentToShortContent"
         motion:constraintSetStart="@id/likedContentShort"
-        motion:constraintSetEnd="@id/writingCommentForShortContent"
         motion:duration="400"
         motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
         />
 
     <Transition
-        android:id="@+id/doneAddingCommentToShortContent"
-        motion:constraintSetStart="@id/finishingCommentForShortContent"
         motion:constraintSetEnd="@id/likedContent"
         motion:duration="400"
         motion:motionInterpolator="cubic(0.0,0.7,0.2,1.0)"
@@ -216,7 +208,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constrainedHeight="true"
-            android:alpha="1"
+            android:alpha="0"
             />
         <Constraint
             android:id="@id/send_like_button"
@@ -230,7 +222,7 @@
             motion:layout_constraintTop_toBottomOf="@id/comment_bubble"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="1"
+            android:alpha="0"
             />
         <Constraint
             android:id="@id/cancel_button"
@@ -316,7 +308,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constrainedHeight="true"
-            android:alpha="1"
+            android:alpha="0"
             />
         <Constraint
             android:id="@id/send_like_button"
@@ -330,7 +322,7 @@
             motion:layout_constraintTop_toBottomOf="@id/comment_bubble"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="1"
+            android:alpha="0"
             />
         <Constraint
             android:id="@id/cancel_button"
@@ -368,7 +360,7 @@
             android:translationY="200dp"
             />
     </ConstraintSet>
-    <ConstraintSet android:id="@+id/writingCommentForTallContent">
+    <ConstraintSet android:id="@+id/writingComment">
         <Constraint
             android:id="@id/motion_liked_content"
             android:layout_width="0dp"
@@ -442,200 +434,7 @@
             motion:layout_constraintTop_toBottomOf="@id/send_like_button"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@+id/comment_composition_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toStartOf="@id/comment_done_button"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:translationY="0dp"
-            />
-        <Constraint
-            android:id="@+id/comment_done_button"
-            android:layout_width="80dp"
-            android:layout_height="0dp"
-            motion:layout_constraintTop_toTopOf="@id/comment_composition_view"
-            motion:layout_constraintStart_toEndOf="@id/comment_composition_view"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:translationY="0dp"
-            />
-    </ConstraintSet>
-    <ConstraintSet android:id="@+id/writingCommentForShortContent">
-        <Constraint
-            android:id="@id/motion_liked_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="8dp"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toTopOf="@id/comment_composition_view"
             android:alpha="1"
-            />
-        <Constraint
-            android:id="@id/like_blur"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:alpha="1"
-            />
-        <Constraint
-            android:id="@id/liked_subject_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="8dp"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toTopOf="@id/motion_liked_content"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@id/comment_bubble"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            motion:layout_constraintTop_toBottomOf="@id/motion_liked_content"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constrainedHeight="true"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@id/send_like_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:scaleY="1"
-            android:scaleX="1"
-            motion:layout_constraintTop_toBottomOf="@id/comment_bubble"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@id/cancel_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:scaleY="1"
-            android:scaleX="1"
-            motion:layout_constraintTop_toBottomOf="@id/send_like_button"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@+id/comment_composition_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toStartOf="@id/comment_done_button"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:translationY="0dp"
-            />
-        <Constraint
-            android:id="@+id/comment_done_button"
-            android:layout_width="80dp"
-            android:layout_height="0dp"
-            motion:layout_constraintTop_toTopOf="@id/comment_composition_view"
-            motion:layout_constraintStart_toEndOf="@id/comment_composition_view"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:translationY="0dp"
-            />
-    </ConstraintSet>
-    <ConstraintSet android:id="@+id/finishingCommentForShortContent">
-        <Constraint
-            android:id="@id/motion_liked_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintVertical_bias="0.35"
-            android:alpha="1"
-            />
-        <Constraint
-            android:id="@id/like_blur"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:alpha="1"
-            />
-        <Constraint
-            android:id="@id/liked_subject_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="8dp"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintBottom_toTopOf="@id/motion_liked_content"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@id/comment_bubble"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            motion:layout_constraintTop_toBottomOf="@id/motion_liked_content"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constrainedHeight="true"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@id/send_like_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:scaleY="1"
-            android:scaleX="1"
-            motion:layout_constraintTop_toBottomOf="@id/comment_bubble"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="0"
-            />
-        <Constraint
-            android:id="@id/cancel_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:scaleY="1"
-            android:scaleX="1"
-            motion:layout_constraintTop_toBottomOf="@id/send_like_button"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:alpha="0"
             />
         <Constraint
             android:id="@+id/comment_composition_view"
